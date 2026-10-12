@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}{{ task.title }} · TaskFlow{% endblock %}
+{% block content %}
+<div class="card form-card" style="max-width:720px">
+  <h1 style="margin-top:0">{{ task.title }}</h1>
+  <p class="muted">{{ task.description|default:"No description provided." }}</p>
+  <div class="detail-grid">
+    <div><div class="k">Status</div><div class="v"><span class="badge b-{{ task.status }}">{{ task.get_status_display }}</span></div></div>
+    <div><div class="k">Priority</div><div class="v"><span class="badge b-p{{ task.priority }}">{{ task.get_priority_display }}</span></div></div>
+    <div><div class="k">Due date</div><div class="v">{{ task.due_date|date:"d M Y" }}
+      {% if task.due_date < today and task.status != 'completed' %}<span class="badge b-overdue">Overdue</span>{% endif %}</div></div>
+    <div><div class="k">Created</div><div class="v">{{ task.created_at|date:"d M Y" }}</div></div>
+  </div>
+  <div class="form-actions">
+    <a class="btn" href="{% url 'task_update' task.pk %}">Edit</a>
+    <a class="btn btn-ghost" href="{% url 'task_list' %}">← Back</a>
+  </div>
+</div>
+{% endblock %}
